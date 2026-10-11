@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>행운길드, 오늘도 영업합니다!</title>
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="script/main.js" defer></script>
+</head>
+<body>
+    <main class="guild">
+        <section id="select_screen" aria-labelledby="select_title">
+            <header class="guild_header">
+                <h1 class="guild_logo">
+                    <img src="img/logo.png" alt="logo" width="1600" height="600">
+                </h1>
+                <h2 id="select_title" class="select_title">
+                    오늘의 길잡이를 선택하세요<span aria-hidden="true">_</span>
+                </h2>
+            </header>
+            <div class="character_list">
+                <button type="button"
+                    class="character"
+                    data-character="warrior"
+                    aria-pressed="false"
+                    aria-labelledby="warrior_name"
+                    aria-describedby="warrior_description"
+                >
+                    <img
+                        class="character_img"
+                        src="img/seleted_1.png"
+                        data-default="img/seleted_1.png"
+                        data-selected="img/seleted_2.png"
+                        alt=""
+                        width="1600"
+                        height="1600"
+                    >
+                    <span id="warrior_name" class="character_name">
+                        용사냥
+                    </span>
+                    <span
+                        id="warrior_description"
+                        class="character_description"
+                    >
+                        씩씩하고 솔직한 행동파<br>
+                        가끔 의욕이 앞서지만,<br>
+                        친구가 곤란할 때<br>
+                        가장 먼저 나선다.
+                    </span>
+                </button>
+                <button
+                    type="button"
+                    class="character"
+                    data-character="mage"
+                    aria-pressed="false"
+                    aria-labelledby="mage_name"
+                    aria-describedby="mage_description"
+                >
+                    <img
+                        class="character_img"
+                        src="img/seleted_4.png"
+                        data-default="img/seleted_4.png"
+                        data-selected="img/seleted_3.png"
+                        alt=""
+                        width="1600"
+                        height="1600"
+                    >
+                    <span id="mage_name" class="character_name">
+                        마법사냥
+                    </span>
+                    <span id="mage_description" class="character_description">
+                        호기심 많고 자기 주관이 뚜렷하다<br>
+                        느긋하고 무심해 보여도,<br>
+                        작은 변화까지 알아채는<br>
+                        섬세한 면이 있다.
+                    </span>
+                </button>
+                <button
+                    type="button"
+                    class="character"
+                    data-character="healer"
+                    aria-pressed="false"
+                    aria-labelledby="healer_name"
+                    aria-describedby="healer_description"
+                >
+                    <img
+                        class="character_img"
+                        src="img/seleted_5.png"
+                        data-default="img/seleted_5.png"
+                        data-selected="img/seleted_6.png"
+                        alt=""
+                        width="1600"
+                        height="1600"
+                    >
+                    <span id="healer_name" class="character_name">
+                        치유냥
+                    </span>
+                    <span
+                        id="healer_description"
+                        class="character_description"
+                    >
+                        차분하고 다정하다.<br>
+                        상대의 마음을 세심하게<br>
+                        살피면서도, 꼭 필요한 순간에는<br>
+                        단호하다.
+                    </span>
+                </button>
+            </div>
+        </section>
+        <section id="input_screen" aria-labelledby="input_title" hidden>
+            <header class="guild_header">
+                <p class="guild_logo">
+                    <img
+                        src="img/logo.png"
+                        alt="logo"
+                        width="1600"
+                        height="600"
+                    >
+                </p>
+            </header>
+            <div class="input_layout">
+                <div class="input_character">
+                    <button
+                        type="button"
+                        id="back_to_select" 
+                        class="back_button"
+                    >
+                        ← 캐릭터 다시 선택
+                    </button>
+                    <img
+                        id="selected_character_img"
+                        src="img/seleted_1.png"
+                        alt="용사냥"
+                        width="1600"
+                        height="1600"
+                    >
+                </div>
+                <form id="birth_form" class="birth_form">
+                    <h2 
+                        id="input_title"
+                        class="input_title"
+                        tabindex="-1"
+                    >
+                        당신이 태어난 날을 알려주세요.
+                    </h2>
+                    <p class="input_description">
+                        생년월일과 태어난 시간으로 오늘의 운세를 알아봐요.
+                    </p>
+                    <fieldset class="birth_group">
+                        <legend class="sr_only">생년월일</legend>
+                            <div class="birth_heading">
+                                <span class="birth_label" aria-hidden="true">
+                                    생년월일
+                                </span>
+                                <div class="calendar_options">
+                                    <label class="calendar_option">
+                                        <input
+                                            type="radio"
+                                            name="calendar"
+                                            value="solar"
+                                            checked
+                                        >
+                                        <span>양력</span>
+                                    </label>
+                                    <label class="calendar_option">
+                                        <input
+                                            type="radio"
+                                            name="calendar"
+                                            value="lunar"
+                                        >
+                                        <span>음력</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <label
+                                id="leap_month_option"
+                                class="leap_month_option"
+                                hidden
+                            >
+                                <input type="checkbox" name="leap_month">
+                                윤달이에요
+                            </label>
+                            <div class="birth_date_fields">
+                                <label class="date_field">
+                                    <input
+                                        type="text"
+                                        id="birth_year"
+                                        name="year"
+                                        placeholder="YYYY"
+                                        aria-label="태어난 연도"
+                                        inputmode="numeric"
+                                        autocomplete="bday-year"
+                                        maxlength="4"
+                                        pattern="[0-9]{4}"
+                                        required
+                                    >
+                                    <span>년</span>
+                                </label>
+                                <label class="date_field">
+                                    <input
+                                        type="text"
+                                        id="birth_month"
+                                        name="month"
+                                        placeholder="MM"
+                                        aria-label="태어난 월"
+                                        inputmode="numeric"
+                                        autocomplete="bday-month"
+                                        maxlength="2"
+                                        pattern="[0-9]{1,2}"
+                                        required
+                                    >
+                                    <span>월</span>
+                                </label>
+                                <label class="date_field">
+                                    <input
+                                        type="text"
+                                        id="birth_day"
+                                        name="day"
+                                        placeholder="DD"
+                                        aria-label="태어난 일"
+                                        inputmode="numeric"
+                                        autocomplete="bday-day"
+                                        maxlength="2"
+                                        pattern="[0-9]{1,2}"
+                                        required
+                                    >
+                                    <span>일</span>
+                                </label>
+                            </div>
+                    </fieldset>
+                    <fieldset class="birth_group">
+                        <legend>태어난 시간</legend>
+                        <div class="birth_time_fields">
+                            <select
+                                id="birth_hour"
+                                name="hour"
+                                aria-label="태어난 시, 24시간 기준"
+                                required
+                            >
+                                <option value="">시</option>
+                            </select>
+                            <select
+                                id="birth_minute"
+                                name="minute"
+                                aria-label="태어난 분"
+                                required
+                            >
+                                <option value="">분</option>
+                            </select>
+                        </div>
+                        <label class="unknown_time">
+                            <input
+                                type="checkbox"
+                                id="unknown_time"
+                                name="unknown_time"
+                            >
+                            태어난 시간을 몰라요.
+                        </label>
+                    </fieldset>
+                    <button type="submit" class="fortune_button">
+                        오늘의 운세 보기 →
+                    </button>
+                    <p
+                        id="form_message"
+                        class="form_message"
+                        role="status"
+                    ></p>
+                </form>
+            </div>
+        </section>
+       <section id="result_screen" hidden>
+            <div class="result_layout">
+                <div class="result_logo">
+                    <img
+                        src="img/logo.png"
+                        alt="행운길드, 오늘도 영업합니다!"
+                    >
+                </div>
+                <div class="result_art">
+                    <img
+                        id="result_frame"
+                        class="result_frame"
+                        src=""
+                        alt=""
+                    >
+                    <div class="result_scroll_text">
+                        <h2
+                            id="result_title"
+                            tabindex="-1"
+                        ></h2>
+                        <p id="result_description"></p>
+                        <div id="result_details"></div>
+                        <section class="result_action_section">
+                            <h3>오늘의 작은 행동</h3>
+                            <p id="result_action"></p>
+                        </section>
+                        <div class="result_luck">
+                            <p>
+                                행운 아이템 |
+                                <span id="result_item"></span>
+                            </p>
+                            <p>
+                                행운 컬러 |
+                                <span id="result_color"></span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="result_character">
+                    <img
+                        id="result_reaction"
+                        src=""
+                        alt=""
+                    >
+                    <div class="result_speech">
+                        <img
+                            src="img/text.png"
+                            alt=""
+                        >
+                        <p id="result_quote"></p>
+                    </div>
+                </div>
+                <button
+                    id="result_retry"
+                    class="result_retry"
+                    type="button"
+                >
+                    다시 운세 보기
+                </button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
