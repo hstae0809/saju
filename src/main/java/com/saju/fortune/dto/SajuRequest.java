@@ -1,6 +1,11 @@
 package com.saju.fortune.dto;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 public class SajuRequest {
+    private static final Set<String> ALLOWED_CHARACTERS = Set.of("warrior", "mage", "healer");
+
     private String character;
     private BirthDto birth;
 
@@ -12,7 +17,12 @@ public class SajuRequest {
 
     public SajuRequest() {}
 
-    public String getCharacter() { return character != null ? character : "warrior"; }
+    public String getCharacter() {
+        if (character == null) return "warrior";
+        String normalized = character.trim().toLowerCase();
+        return ALLOWED_CHARACTERS.contains(normalized) ? normalized : "warrior";
+    }
+
     public void setCharacter(String character) { this.character = character; }
 
     public BirthDto getBirth() { return birth; }
@@ -53,6 +63,38 @@ public class SajuRequest {
 
     public boolean isUnknownTime() {
         return birth != null && Boolean.TRUE.equals(birth.getUnknownTime());
+    }
+
+    public void validate() {
+        int currentYear = LocalDate.now().getYear();
+        int y = getResolvedYear();
+        int m = getResolvedMonth();
+        int d = getResolvedDay();
+        int h = getResolvedHour();
+
+        if (y < 1900 || y > currentYear) {
+            throw new IllegalArgumentException("태어난 연도는 1900년부터 " + currentYear + "년 사이여야 합니다.");
+        }
+        if (m < 1 || m > 12) {
+            throw new IllegalArgumentException("태어난 월은 1월부터 12월 사이여야 합니다.");
+        }
+        int maxDay = isLunar() ? 30 : 31;
+        if (d < 1 || d > maxDay) {
+            throw new IllegalArgumentException("태어난 일이 올바르지 않습니다.");
+        }
+        if (!isLunar()) {
+            try {
+                LocalDate solarDate = LocalDate.of(y, m, d);
+                if (solarDate.isAfter(LocalDate.now())) {
+                    throw new IllegalArgumentException("미래의 날짜는 입력할 수 없습니다.");
+                }
+            } catch (java.time.DateTimeException e) {
+                throw new IllegalArgumentException("존재하지 않는 양력 날짜입니다.");
+            }
+        }
+        if (h < 0 || h > 23) {
+            throw new IllegalArgumentException("태어난 시간은 0시부터 23시 사이여야 합니다.");
+        }
     }
 
     public int getBirthYear() { return getResolvedYear(); }

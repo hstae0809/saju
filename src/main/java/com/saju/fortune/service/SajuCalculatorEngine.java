@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 @Service
 public class SajuCalculatorEngine {
@@ -84,15 +85,31 @@ public class SajuCalculatorEngine {
 
     private FortuneResponseDto generateFortuneResult(SajuRequest req, SajuPalja palja) {
         LocalDate today = LocalDate.now();
-        int todaySeed = today.getDayOfYear();
-        int userSeed = palja.dayCheongan.ordinal() + palja.dayJiji.ordinal();
-        
-        int magicNumber = Math.abs((todaySeed * userSeed * (req.getResolvedHour() + 1)) % 100);
+
+        int hash = Objects.hash(
+            today.getYear(),
+            today.getDayOfYear(),
+            palja.yearCheongan.ordinal(),
+            palja.yearJiji.ordinal(),
+            palja.monthCheongan.ordinal(),
+            palja.monthJiji.ordinal(),
+            palja.dayCheongan.ordinal(),
+            palja.dayJiji.ordinal(),
+            palja.hourCheongan.ordinal(),
+            palja.hourJiji.ordinal(),
+            req.getResolvedYear(),
+            req.getResolvedMonth(),
+            req.getResolvedDay(),
+            req.getResolvedHour(),
+            req.getCharacter()
+        );
+
+        int magicNumber = Math.floorMod(hash, 100);
 
         String grade;
-        if (magicNumber >= 70) {
+        if (magicNumber >= 68) {
             grade = "good";
-        } else if (magicNumber >= 35) {
+        } else if (magicNumber >= 34) {
             grade = "normal";
         } else {
             grade = "bad";
