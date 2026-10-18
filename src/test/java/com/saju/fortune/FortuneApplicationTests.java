@@ -7,14 +7,19 @@ import com.saju.fortune.service.SajuCalculatorEngine;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class FortuneApplicationTests {
 
     @Autowired
@@ -23,8 +28,25 @@ class FortuneApplicationTests {
     @Autowired
     private SajuCalculatorEngine sajuEngine;
 
+    @Autowired
+    private MockMvc mockMvc;
+
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    void testStaticCssAndJsResourcesServed() throws Exception {
+        mockMvc.perform(get("/css/font.css"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith("text/css"));
+
+        mockMvc.perform(get("/css/style.css"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith("text/css"));
+
+        mockMvc.perform(get("/script/main.js"))
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -56,6 +78,53 @@ class FortuneApplicationTests {
         assertNotNull(response.getQuote());
         assertNotNull(response.getDetails());
         assertEquals(2, response.getDetails().size());
+    }
+
+    @Test
+    void testSameBirthInfoDifferentCharactersProduceSameGradeAndScrollContent() {
+        String[] characters = {"warrior", "mage", "healer"};
+        Set<String> grades = new HashSet<>();
+        Set<String> titles = new HashSet<>();
+        Set<String> detail1s = new HashSet<>();
+        Set<String> detail2s = new HashSet<>();
+        Set<String> actions = new HashSet<>();
+        Set<String> items = new HashSet<>();
+        Set<String> colors = new HashSet<>();
+        Set<String> quotes = new HashSet<>();
+
+        for (String ch : characters) {
+            SajuRequest req = new SajuRequest();
+            req.setCharacter(ch);
+            SajuRequest.BirthDto birth = new SajuRequest.BirthDto();
+            birth.setYear(2000);
+            birth.setMonth(5);
+            birth.setDay(20);
+            birth.setCalendar("solar");
+            birth.setLeapMonth(false);
+            birth.setUnknownTime(false);
+            birth.setHour(14);
+            birth.setMinute(30);
+            req.setBirth(birth);
+
+            FortuneResponseDto res = sajuEngine.getTodayFortune(req);
+            grades.add(res.getGrade());
+            titles.add(res.getTitle());
+            detail1s.add(res.getDetails().get(0));
+            detail2s.add(res.getDetails().get(1));
+            actions.add(res.getAction());
+            items.add(res.getLuckyItem());
+            colors.add(res.getLuckyColor());
+            quotes.add(res.getQuote());
+        }
+
+        assertEquals(1, grades.size());
+        assertEquals(1, titles.size());
+        assertEquals(1, detail1s.size());
+        assertEquals(1, detail2s.size());
+        assertEquals(1, actions.size());
+        assertEquals(1, items.size());
+        assertEquals(1, colors.size());
+        assertEquals(3, quotes.size());
     }
 
     @Test

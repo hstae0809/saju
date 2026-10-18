@@ -173,90 +173,7 @@ birthForm.addEventListener("input", () => {
     fortuneState.birth = null;
 });
 
-const USE_MOCK = false;
-
-const mockResults = [
-    {
-        grade: "good",
-        title: "뜻밖의 반가움이 찾아오는 날",
-        description: "평소 같으면 지나쳤을 곳에서 작은 즐거움을 발견할지도 몰라요.",
-        details: [
-            "궁금했던 일이나 망설였던 제안이 있다면 가볍게 한 걸음 내디뎌 보세요.",
-            "거창한 도전보다 작은 시도가 즐거운 하루를 만들어줄 거예요."
-        ],
-        action: "궁금해서 저장만 해뒀던 것 하나를 해보세요.",
-        luckyItem: "열쇠고리",
-        luckyColor: "하늘색",
-        quote: "작은 발견도 모이면 멋진 모험이 된다고!"
-    },
-    {
-        grade: "normal",
-        title: "평범함 속에서 발견하는 작은 행복",
-        description: "오늘은 소소한 일상이 마음을 편안하게 해줄 거예요.",
-        details: [
-            "서두르지 않고 자신의 속도를 지켜보세요.",
-            "익숙한 풍경에서도 새로운 기분을 발견할 수 있어요."
-        ],
-        action: "좋아하는 음악을 들으며 산책해 보세요.",
-        luckyItem: "머그컵",
-        luckyColor: "연두색",
-        quote: "오늘은 천천히 가도 괜찮아!"
-    },
-    {
-        grade: "bad",
-        title: "조금은 신중하게 걸어야 하는 날",
-        description: "생각했던 것과 다른 일이 생겨도 조급해하지 마세요.",
-        details: [
-            "오늘은 중요한 결정을 서두르지 않는 것이 좋겠어요.",
-            "충분한 휴식으로 내일을 준비해 보세요."
-        ],
-        action: "따뜻한 음료를 마시며 잠깐 쉬어보세요.",
-        luckyItem: "손수건",
-        luckyColor: "보라색",
-        quote: "모험도 좋지만 쉬어 가는 날도 필요하지!"
-    }
-];
-
-function getMockFortune() {
-    const birth = fortuneState.birth;
-    const today = new Date();
-
-    const key = [
-        today.getFullYear(),
-        today.getMonth() + 1,
-        today.getDate(),
-        fortuneState.character,
-        birth.year,
-        birth.month,
-        birth.day,
-        birth.calendar,
-        birth.leapMonth,
-        birth.hour,
-        birth.minute
-    ].join("-");
-
-    let hash = 0;
-
-    for (let i = 0; i < key.length; i++) {
-        hash = (
-            Math.imul(hash, 31) + key.charCodeAt(i)
-        ) | 0;
-    }
-
-    const index = (hash >>> 0) % mockResults.length;
-
-    return {
-        ...mockResults[index],
-        date: today.toLocaleDateString("sv-SE")
-    };
-}
-
-
 async function getFortuneResult() {
-    if (USE_MOCK) {
-        return getMockFortune();
-    }
-
     const response = await fetch("/api/fortune", {
         method: "POST",
         headers: {
@@ -439,3 +356,22 @@ window.addEventListener("resize", () => {
         fitResultTitle();
     }
 });
+
+document.querySelectorAll("img").forEach((img) => {
+    img.setAttribute("draggable", "false");
+});
+
+document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+});
+
+document.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+});
+
+document.addEventListener("selectstart", (event) => {
+    if (!event.target.closest("input, select, textarea")) {
+        event.preventDefault();
+    }
+});
+

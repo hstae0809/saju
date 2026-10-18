@@ -101,7 +101,8 @@ public class SajuCalculatorEngine {
             req.getResolvedMonth(),
             req.getResolvedDay(),
             req.getResolvedHour(),
-            req.getCharacter()
+            req.isLunar(),
+            req.isLeapMonth()
         );
 
         int magicNumber = Math.floorMod(hash, 100);
