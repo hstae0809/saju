@@ -1,0 +1,18 @@
+{
+  "name": "행운길드, 오늘도 영업합니다!",
+  "short_name": "행운길드",
+  "description": "고양이 길잡이와 함께 알아보는 오늘의 사주 운세",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ede9e2",
+  "theme_color": "#ede9e2",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "img/seleted_2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

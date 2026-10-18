@@ -5,6 +5,7 @@ spring:
     import: optional:classpath:application-secret.yml
 
 server:
+  port: ${PORT:8080}
   error:
     include-stacktrace: never
     include-message: never

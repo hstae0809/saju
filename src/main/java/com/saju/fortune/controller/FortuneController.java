@@ -14,10 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "https://luckycat-tau.vercel.app"
+@CrossOrigin(originPatterns = {
+    "http://localhost:*",
+    "http://127.0.0.1:*",
+    "https://*.vercel.app",
+    "https://*.onrender.com",
+    "https://*.koyeb.app",
+    "https://*.up.railway.app"
 })
 public class FortuneController {
 
